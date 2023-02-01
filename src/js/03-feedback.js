@@ -36,12 +36,18 @@ function onFormSubmit(evt) {
 
 function onInputChange(e) {
   formData.email = e.target.value;
-  toLocalStorageSave();
+
+  if (formData.email !== undefined) {
+    toLocalStorageSave();
+  }
 }
 
 function onTextareaChange(e) {
   formData.message = e.target.value;
-  toLocalStorageSave();
+
+  if (formData.message !== undefined) {
+    toLocalStorageSave();
+  }
 }
 
 function toLocalStorageSave() {
@@ -51,11 +57,12 @@ function toLocalStorageSave() {
 }
 
 function populateTextarea() {
-  const savedMessage = localStorage.getItem(STORAGE_KEY);
+  const savedMessage = JSON.parse(localStorage.getItem(STORAGE_KEY));
 
-  if (savedMessage) {
-    const userMessage = JSON.parse(savedMessage);
-    refs.input.value = userMessage.email;
-    refs.textarea.value = userMessage.message;
+  if (savedMessage === null) {
+    //console.log(savedMessage);
+    return;
   }
+  refs.textarea.value = savedMessage['message'] || '';
+  refs.input.value = savedMessage['email'] || '';
 }
